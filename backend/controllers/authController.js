@@ -48,6 +48,16 @@ exports.signup = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
+    const user = await prisma.user.findFirst({
+      where: { OR: [{ username }, { email }] },
+    });
+
+    if (user) {
+      return res
+        .status(400)
+        .json({ message: "username or email already exist." });
+    }
+
     await prisma.user.create({
       data: {
         username,
