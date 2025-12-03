@@ -55,7 +55,7 @@ exports.signup = async (req, res) => {
     if (user) {
       return res
         .status(400)
-        .json({ message: "username or email already exist." });
+        .json({ message: "username or email already exists." });
     }
 
     await prisma.user.create({
@@ -68,6 +68,6 @@ exports.signup = async (req, res) => {
     res.json({ message: "Account created successfully!" });
   } catch (err) {
     console.log(err);
-    res.sendStatus(500);
+    res.status(500).json({ message: "Something went wrong." });
   }
 };
