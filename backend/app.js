@@ -4,9 +4,13 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const authRouter = require("./routes/authRouter");
+
 app.get("/", (req, res) => {
-  res.send("Welcome to blog api");
+  res.json({ message: "Welcome to blog api" });
 });
+
+app.use("/auth", authRouter);
 
 app.listen(3000, (err) => {
   if (err) throw err;
