@@ -15,3 +15,19 @@ exports.getAllPosts = async (req, res) => {
     res.sendStatus(500);
   }
 };
+
+exports.getPostBySlug = async (req, res) => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { slug: req.params.slug },
+      include: { author: true, comments: true },
+    });
+
+    if (!post) return res.status(404);
+
+    res.json(post);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Something went wrong." });
+  }
+};
