@@ -5,12 +5,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const authRouter = require("./routes/authRouter");
+const postsRouter = require("./routes/postsRouter");
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to blog api" });
 });
 
 app.use("/auth", authRouter);
+app.use("/posts", postsRouter);
 
 app.listen(3000, (err) => {
   if (err) throw err;
