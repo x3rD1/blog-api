@@ -7,5 +7,9 @@ commentsRouter.get("/:id", commentsController.getCommentById);
 
 commentsRouter.post("/", authenticateToken, commentsController.createComment);
 commentsRouter.put("/:id", authenticateToken, commentsController.updateComment);
-
+commentsRouter.delete(
+  "/:id",
+  authenticateToken,
+  commentsController.deleteComment
+);
 module.exports = commentsRouter;
