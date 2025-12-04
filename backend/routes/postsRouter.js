@@ -26,4 +26,11 @@ postsRouter.put(
   postsController.updatePost
 );
 
+postsRouter.delete(
+  "/:slug",
+  authenticateToken,
+  isAdmin,
+  postsController.deletePost
+);
+
 module.exports = postsRouter;
