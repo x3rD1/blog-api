@@ -65,3 +65,34 @@ exports.createComment = async (req, res) => {
     res.status(500).json({ success: false, message: "Something went wrong." });
   }
 };
+
+exports.updateComment = async (req, res) => {
+  try {
+    const commentId = parseInt(req.params.id, 10);
+
+    const exist = await prisma.comment.findUnique({
+      where: { id: commentId },
+      select: { authorId: true },
+    });
+
+    if (!exist)
+      return res
+        .status(404)
+        .json({ success: false, message: "Comment not found." });
+
+    if (exist.authorId !== req.user.id)
+      return res
+        .status(403)
+        .json({ success: false, message: "Forbidden action!" });
+
+    const comment = await prisma.comment.update({
+      data: { body: req.body.comment },
+      where: { id: commentId },
+    });
+
+    res.json({ success: true, message: "Updated successfully", comment });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Something went wrong." });
+  }
+};
