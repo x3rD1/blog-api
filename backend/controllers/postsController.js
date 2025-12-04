@@ -44,6 +44,12 @@ exports.createPost = async (req, res) => {
     // Check if slug already exists
     const exist = await prisma.post.findUnique({ where: { slug } });
 
+    if (exist)
+      return res.status(403).json({
+        success: false,
+        message: "A post with this title already exists.",
+      });
+
     await prisma.post.create({
       data: { title, slug, body, authorId: req.user.id },
     });
