@@ -60,3 +60,43 @@ exports.createPost = async (req, res) => {
     res.status(500).json({ success: false, message: "Something went wrong!" });
   }
 };
+
+exports.updatePost = async (req, res) => {
+  try {
+    const { title, body } = req.body;
+    const slug = slugify(title);
+
+    // Check if the post actually exists
+    const exist = await prisma.post.findUnique({
+      where: { slug: req.params.slug },
+    });
+
+    if (!exist)
+      return res
+        .status(404)
+        .json({ success: false, message: "Blog not found!" });
+
+    // Check if the title has changed, if it does check if already exists
+    if (slug !== req.params.slug) {
+      const conflict = await prisma.post.findUnique({ where: { slug } });
+      if (conflict)
+        return res
+          .status(403)
+          .json({ success: false, message: "Title already exists." });
+    }
+
+    const post = await prisma.post.update({
+      data: {
+        title,
+        slug,
+        body,
+      },
+      where: { slug: req.params.slug },
+    });
+
+    res.json({ success: true, message: "Update successfully!", post });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Something went wrong." });
+  }
+};
