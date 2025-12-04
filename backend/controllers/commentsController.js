@@ -96,3 +96,31 @@ exports.updateComment = async (req, res) => {
     res.status(500).json({ success: false, message: "Something went wrong." });
   }
 };
+
+exports.deleteComment = async (req, res) => {
+  try {
+    const commentId = parseInt(req.params.id, 10);
+
+    const exist = await prisma.comment.findUnique({
+      where: { id: commentId },
+      select: { authorId: true },
+    });
+
+    if (!exist)
+      return res
+        .status(404)
+        .json({ success: false, message: "Comment not found." });
+
+    if (exist.authorId !== req.user.sub)
+      return res
+        .status(403)
+        .json({ success: false, message: "Forbidden action!" });
+
+    await prisma.comment.delete({ where: { id: commentId } });
+
+    res.json({ success: true, message: "Deleted successfully!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Something went wrong." });
+  }
+};
