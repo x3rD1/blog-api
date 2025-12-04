@@ -1,4 +1,5 @@
 const prisma = require("../config/prisma");
+const slugify = require("../utilities/slugify");
 
 exports.getAllPosts = async (req, res) => {
   try {
@@ -12,7 +13,7 @@ exports.getAllPosts = async (req, res) => {
     res.json(posts);
   } catch (err) {
     console.log(err);
-    res.sendStatus(500);
+    res.status(500).json({ success: false, message: "Something went wrong!" });
   }
 };
 
@@ -28,6 +29,25 @@ exports.getPostBySlug = async (req, res) => {
     res.json(post);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ success: false, message: "Something went wrong." });
+    res.status(500).json({ success: false, message: "Something went wrong!" });
+  }
+};
+
+exports.createPost = async (req, res) => {
+  try {
+    const { title, body } = req.body;
+    const slug = slugify(title);
+
+    // Check if slug already exists
+    const exist = await prisma.post.findUnique({ where: { slug } });
+
+    await prisma.post.create({
+      data: { title, slug, body, authorId: req.user.id },
+    });
+
+    res.json({ success: true, message: "Post has been created!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Something went wrong!" });
   }
 };
