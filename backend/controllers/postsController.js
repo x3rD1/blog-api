@@ -100,3 +100,23 @@ exports.updatePost = async (req, res) => {
     res.status(500).json({ success: false, message: "Something went wrong." });
   }
 };
+
+exports.deletePost = async (req, res) => {
+  try {
+    const exist = await prisma.post.findUnique({
+      where: { slug: req.params.slug },
+    });
+
+    if (!exist)
+      return res
+        .status(404)
+        .json({ success: false, message: "Blog not found." });
+
+    await prisma.post.delete({ where: { slug: req.params.slug } });
+
+    res.json({ success: true, message: "Deleted successfully!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Something went wrong." });
+  }
+};
