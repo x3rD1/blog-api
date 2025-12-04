@@ -17,4 +17,13 @@ postsRouter.post(
   postsController.createPost
 );
 
+postsRouter.put(
+  "/:slug",
+  authenticateToken,
+  isAdmin,
+  validatePost,
+  handleValidation,
+  postsController.updatePost
+);
+
 module.exports = postsRouter;
