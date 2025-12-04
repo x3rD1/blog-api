@@ -38,3 +38,30 @@ exports.getCommentById = async (req, res) => {
     res.status(500).json({ success: false, message: "Something went wrong." });
   }
 };
+
+exports.createComment = async (req, res) => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { slug: req.params.slug },
+      select: { id: true },
+    });
+
+    if (!post)
+      return res
+        .status(404)
+        .json({ success: false, message: "Blog not found." });
+
+    const comment = await prisma.comment.create({
+      data: {
+        body: req.body.comment,
+        authorId: req.user.sub,
+        postId: post.id,
+      },
+    });
+
+    res.json({ success: true, comment });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Something went wrong." });
+  }
+};
