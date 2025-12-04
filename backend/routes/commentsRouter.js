@@ -6,5 +6,6 @@ commentsRouter.get("/", commentsController.getAllComments);
 commentsRouter.get("/:id", commentsController.getCommentById);
 
 commentsRouter.post("/", authenticateToken, commentsController.createComment);
+commentsRouter.put("/:id", authenticateToken, commentsController.updateComment);
 
 module.exports = commentsRouter;
