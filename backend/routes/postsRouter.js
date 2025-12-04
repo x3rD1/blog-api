@@ -9,7 +9,8 @@ postsRouter.get("/", authenticateToken, postsController.getAllPosts);
 postsRouter.get("/:slug", authenticateToken, postsController.getPostBySlug);
 
 postsRouter.post(
-  "/:slug",
+  "/",
+  authenticateToken,
   isAdmin,
   validatePost,
   handleValidation,
