@@ -80,7 +80,7 @@ exports.updateComment = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Comment not found." });
 
-    if (exist.authorId !== req.user.id)
+    if (exist.authorId !== req.user.sub)
       return res
         .status(403)
         .json({ success: false, message: "Forbidden action!" });
