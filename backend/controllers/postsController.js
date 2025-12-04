@@ -24,7 +24,10 @@ exports.getPostBySlug = async (req, res) => {
       include: { author: true, comments: true },
     });
 
-    if (!post) return res.status(404);
+    if (!post)
+      return res
+        .status(404)
+        .json({ success: false, message: "Blog not found." });
 
     res.json(post);
   } catch (err) {
