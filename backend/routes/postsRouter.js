@@ -5,8 +5,8 @@ const { handleValidation } = require("../middlewares/handleValidation");
 const { isAdmin } = require("../middlewares/isAdmin");
 const { authenticateToken } = require("../middlewares/authenticateToken");
 
-postsRouter.get("/", authenticateToken, postsController.getAllPosts);
-postsRouter.get("/:slug", authenticateToken, postsController.getPostBySlug);
+postsRouter.get("/", postsController.getAllPosts);
+postsRouter.get("/:slug", postsController.getPostBySlug);
 
 postsRouter.post(
   "/",
@@ -32,5 +32,8 @@ postsRouter.delete(
   isAdmin,
   postsController.deletePost
 );
+
+const commentsRouter = require("../routes/commentsRouter");
+postsRouter.use("/:slug/comments", commentsRouter);
 
 module.exports = postsRouter;
