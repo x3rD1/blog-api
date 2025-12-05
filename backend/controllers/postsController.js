@@ -21,7 +21,10 @@ exports.getPostBySlug = async (req, res) => {
   try {
     const post = await prisma.post.findUnique({
       where: { slug: req.params.slug },
-      include: { author: true, comments: true },
+      include: {
+        author: { select: { id: true, username: true } },
+        comments: true,
+      },
     });
 
     if (!post)
@@ -29,7 +32,7 @@ exports.getPostBySlug = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Blog not found." });
 
-    res.json(post);
+    res.json({ success: true, post });
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, message: "Something went wrong!" });
