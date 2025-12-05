@@ -1,5 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const prisma = require("../config/prisma");
 
 exports.authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -11,16 +12,25 @@ exports.authenticateToken = (req, res, next) => {
       message: "No token provided. You must be logged in.",
     });
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, process.env.TOKEN_SECRET, async (err, payload) => {
     if (err)
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message: "Token is not valid or has expired.",
-        });
+      return res.status(403).json({
+        success: false,
+        message: "Token is not valid or has expired.",
+      });
 
-    req.user = user;
+    const user = await prisma.user.findUnique({
+      where: { id: payload.sub },
+      select: { tokenVersion: true },
+    });
+
+    if (!user || user.tokenVersion !== payload.tokenVersion) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Token revoked!" });
+    }
+
+    req.user = payload;
     next();
   });
 };
