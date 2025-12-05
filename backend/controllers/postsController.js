@@ -1,5 +1,5 @@
 const prisma = require("../config/prisma");
-const slugify = require("../utilities/slugify");
+const { slugify } = require("../utilities/slugify");
 
 exports.getAllPosts = async (req, res) => {
   try {
@@ -51,7 +51,7 @@ exports.createPost = async (req, res) => {
       });
 
     await prisma.post.create({
-      data: { title, slug, body, authorId: req.user.id },
+      data: { title, slug, body, authorId: req.user.sub },
     });
 
     res.json({ success: true, message: "Post has been created!" });
