@@ -2,6 +2,16 @@ const prisma = require("../config/prisma");
 
 exports.getAllComments = async (req, res) => {
   try {
+    const exist = await prisma.post.findUnique({
+      where: { slug: req.params.slug },
+    });
+
+    if (!exist)
+      return res.status(404).json({
+        success: false,
+        message: "The requested resource does not exist.",
+      });
+
     const comments = await prisma.comment.findMany({
       where: { post: { slug: req.params.slug } },
     });
