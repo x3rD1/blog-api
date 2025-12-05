@@ -14,6 +14,10 @@ app.get("/", (req, res) => {
 app.use("/auth", authRouter);
 app.use("/posts", postsRouter);
 
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Route not found." });
+});
+
 app.listen(3000, (err) => {
   if (err) throw err;
 
