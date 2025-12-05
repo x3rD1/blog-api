@@ -31,6 +31,7 @@ exports.login = async (req, res) => {
       sub: user.id,
       email: user.email,
       admin: user.admin,
+      tokenVersion: user.tokenVersion,
     };
 
     const accessToken = createAccessToken(payload);
@@ -117,7 +118,12 @@ exports.refreshToken = async (req, res) => {
   res.json({ success: true, accessToken });
 };
 
-exports.logout = (req, res) => {
+exports.logout = async (req, res) => {
+  await prisma.user.update({
+    data: { tokenVersion: { increment: 1 } },
+    where: { id: req.user.sub },
+  });
+
   res.clearCookie("jid", { path: "/auth/token/refresh" });
   res.json({ success: true, message: "Logged out successfully!" });
 };
