@@ -4,11 +4,18 @@ const { slugify } = require("../utilities/slugify");
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
-      where: { AND: [{ publish: true }, { author: { admin: true } }] },
+      where: {
+        AND: [{ publish: true }, { author: { admin: true } }],
+      },
+      include: { author: { select: { username: true } }, comments: true },
     });
 
     if (!posts.length)
-      return res.json({ success: true, message: "No posts available." });
+      return res.json({
+        success: true,
+        message: "No posts available.",
+        posts: [],
+      });
 
     res.json(posts);
   } catch (err) {
