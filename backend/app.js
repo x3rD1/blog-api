@@ -9,12 +9,8 @@ app.use(cookieParser());
 const authRouter = require("./routes/authRouter");
 const postsRouter = require("./routes/postsRouter");
 
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to blog api" });
-});
-
-app.use("/auth", authRouter);
-app.use("/posts", postsRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/posts", postsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found." });
