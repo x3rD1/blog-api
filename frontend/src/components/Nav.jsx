@@ -4,8 +4,8 @@ function Nav() {
   return (
     <nav className={styles.navbar}>
       <div>
-        <a href="#" className={styles.logo}>
-          Sulat
+        <a href="/" className={styles.logo}>
+          <h1>Katha</h1>
         </a>
       </div>
       <ul className={styles.menu}>
