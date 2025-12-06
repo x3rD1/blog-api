@@ -1,0 +1,71 @@
+.errorContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  background: #ffffff; /* Matches your IndexPage */
+  min-height: 100vh; /* Full screen below nav */
+  width: 100%;
+}
+
+.errorContent {
+  text-align: center;
+  max-width: 600px;
+}
+
+.errorCode {
+  font-size: 8rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #4b5563 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.errorTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.errorMessage {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+.homeLink {
+  display: inline-block;
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.homeLink:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+}
+
+@media (max-width: 768px) {
+  .errorContainer {
+    padding: 3rem 1.5rem;
+  }
+
+  .errorCode {
+    font-size: 5rem;
+  }
+
+  .errorTitle {
+    font-size: 1.5rem;
+  }
+}
