@@ -5,8 +5,8 @@ exports.validatePost = [
     .trim()
     .notEmpty()
     .withMessage("Title is required.")
-    .isLength({ min: 3, max: 60 })
-    .withMessage("Title must be between 3 and 60 characters long."),
+    .isLength({ min: 3, max: 100 })
+    .withMessage("Title must be between 3 and 100 characters long."),
 
   body("body")
     .notEmpty()
