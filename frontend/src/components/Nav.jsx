@@ -1,16 +1,17 @@
+import { Link } from "react-router";
 import styles from "./Nav.module.css";
 
 function Nav() {
   return (
     <nav className={styles.navbar}>
       <div>
-        <a href="/" className={styles.logo}>
+        <Link to={"/"} className={styles.logo}>
           <h1>Katha</h1>
-        </a>
+        </Link>
       </div>
       <ul className={styles.menu}>
         <li className={styles.menuItem}>
-          <a href="#">Blogs</a>
+          <Link to={"blogs"}>Blogs</Link>
         </li>
         <li className={styles.menuItem}>
           <a href="#">Sign in</a>
