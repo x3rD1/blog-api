@@ -1,0 +1,65 @@
+.heroContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid black;
+  padding: 4rem 2rem;
+  width: 100%;
+  min-height: calc(100vh - 80px); /* Full height minus nav */
+}
+
+.heroContent {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.heading h2 {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #1a1a1a; /* Dark text */
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.subtitle p {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: #6b7280; /* Medium gray text */
+  margin-bottom: 2.5rem;
+}
+
+.buttonContainer button {
+  background-color: #1a1a1a; /* Black button */
+  color: #ffffff;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttonContainer button:hover {
+  background-color: #333333;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .heading h2 {
+    font-size: 2.8rem;
+  }
+
+  .subtitle p {
+    font-size: 1.2rem;
+  }
+
+  .heroContainer {
+    min-height: calc(100vh - 70px);
+    padding: 3rem 1.5rem;
+  }
+}
