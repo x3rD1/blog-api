@@ -14,6 +14,7 @@ exports.getAllComments = async (req, res) => {
 
     const comments = await prisma.comment.findMany({
       where: { post: { slug: req.params.slug } },
+      include: { author: { select: { username: true } } },
     });
 
     if (!comments.length)
@@ -35,6 +36,7 @@ exports.getCommentById = async (req, res) => {
   try {
     const comment = await prisma.comment.findUnique({
       where: { id: commentId },
+      include: { author: { select: { username: true } } },
     });
 
     if (!comment)
