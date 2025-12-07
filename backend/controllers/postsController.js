@@ -30,7 +30,7 @@ exports.getPostBySlug = async (req, res) => {
       where: { slug: req.params.slug },
       include: {
         author: { select: { id: true, username: true } },
-        comments: true,
+        comments: { include: { author: { select: { username: true } } } },
       },
     });
 
