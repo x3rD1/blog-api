@@ -43,7 +43,7 @@
 .postsList {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.8rem;
 }
 
 .postLink {
@@ -53,7 +53,6 @@
 }
 
 .postCard {
-  padding-bottom: 2rem;
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -155,6 +154,15 @@
   color: #6b7280;
   font-size: 2rem;
   text-align: center;
+}
+
+.divider {
+  border: none;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.divider:last-of-type {
+  display: none; /* hide last hr */
 }
 
 @media (max-width: 768px) {
