@@ -2,6 +2,7 @@ import App from "./App";
 import ErrorPage from "./components/ErrorPage";
 import IndexPage from "./components/IndexPage";
 import BlogsPage from "./components/BlogsPage";
+import Post from "./components/Post";
 
 const routes = [
   {
@@ -11,6 +12,7 @@ const routes = [
     children: [
       { index: true, element: <IndexPage /> },
       { path: "blogs", element: <BlogsPage /> },
+      { path: "post/:slug", element: <Post /> },
     ],
   },
 ];
