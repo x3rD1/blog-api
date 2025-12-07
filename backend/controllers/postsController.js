@@ -8,6 +8,7 @@ exports.getAllPosts = async (req, res) => {
         AND: [{ publish: true }, { author: { admin: true } }],
       },
       include: { author: { select: { username: true } }, comments: true },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!posts.length)
@@ -30,7 +31,10 @@ exports.getPostBySlug = async (req, res) => {
       where: { slug: req.params.slug },
       include: {
         author: { select: { id: true, username: true } },
-        comments: { include: { author: { select: { username: true } } } },
+        comments: {
+          include: { author: { select: { username: true } } },
+          orderBy: { createdAt: "desc" },
+        },
       },
     });
 
