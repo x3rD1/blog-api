@@ -39,7 +39,7 @@ exports.login = async (req, res) => {
 
     res.cookie("jid", refreshToken, {
       httpOnly: true,
-      path: "/auth/token/refresh",
+      path: "/api/auth/token/refresh",
     });
 
     res.json({ message: "Authenticated", accessToken, payload });
@@ -112,7 +112,7 @@ exports.refreshToken = async (req, res) => {
 
   res.cookie("jid", refreshToken, {
     httpOnly: true,
-    path: "/auth/token/refresh",
+    path: "/api/auth/token/refresh",
   });
 
   res.json({ success: true, accessToken });
