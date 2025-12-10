@@ -29,6 +29,7 @@ exports.login = async (req, res) => {
 
     const payload = {
       sub: user.id,
+      username: user.username,
       email: user.email,
       admin: user.admin,
       tokenVersion: user.tokenVersion,
@@ -103,6 +104,7 @@ exports.refreshToken = async (req, res) => {
 
   const userPayload = {
     sub: user.id,
+    username: user.username,
     email: user.email,
     admin: user.admin,
   };
