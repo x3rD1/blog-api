@@ -33,17 +33,20 @@
   list-style: none;
 }
 
-.menuItem a {
+.menuItem button {
   position: relative;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
   color: #444;
+  background: none;
+  border: none;
   text-decoration: none;
-  padding: 0.4rem 0;
+  padding: 0;
+  cursor: pointer;
   transition: color 0.25s ease;
 }
 
-.menuItem a::after {
+.menuItem button::after {
   content: "";
   position: absolute;
   left: 0;
@@ -55,10 +58,10 @@
   transform-origin: right;
   transition: transform 0.3s ease;
 }
-.menuItem a:hover {
+.menuItem button:hover {
   color: #111;
 }
-.menuItem a:hover::after {
+.menuItem button:hover::after {
   transform: scaleX(1);
   transform-origin: left;
 }

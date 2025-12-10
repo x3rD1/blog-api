@@ -1,7 +1,17 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import styles from "./Nav.module.css";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 function Nav() {
+  const { accessToken, user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logout();
+    navigate("/");
+  }
+
   return (
     <nav className={styles.navbar}>
       <div>
@@ -11,14 +21,31 @@ function Nav() {
       </div>
       <ul className={styles.menu}>
         <li className={styles.menuItem}>
-          <Link to={"blogs"}>Blogs</Link>
+          <Link to={"blogs"}>
+            <button>Blogs</button>
+          </Link>
         </li>
-        <li className={styles.menuItem}>
-          <a href="#">Sign in</a>
-        </li>
-        <li className={styles.menuItem}>
-          <a href="#">Sign up</a>
-        </li>
+        {accessToken ? (
+          <>
+            <li className={styles.menuItem}>
+              <button>{user.username}</button>
+            </li>
+            <li className={styles.menuItem}>
+              <button onClick={handleLogout}> Logout</button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li className={styles.menuItem}>
+              <Link to={"/signin"}>
+                <button>Sign in</button>
+              </Link>
+            </li>
+            <li className={styles.menuItem}>
+              <button>Sign up</button>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );
