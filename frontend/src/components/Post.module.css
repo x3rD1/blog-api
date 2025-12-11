@@ -245,7 +245,11 @@
   border-radius: 30px;
   cursor: pointer;
 }
-
+.commentSubmitBtn:disabled {
+  background-color: #6b7280;
+  opacity: 0.2;
+  cursor: auto;
+}
 .commentsList {
   display: flex;
   flex-direction: column;

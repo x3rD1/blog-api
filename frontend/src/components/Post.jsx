@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import styles from "./Post.module.css";
 import TimeAgo from "./formatDate/TimeAgo";
+import { AuthContext } from "../context/AuthContext";
 
-export default function Post() {
+function Post() {
+  const { accessToken } = useContext(AuthContext);
   const { slug } = useParams();
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
+  const [body, setBody] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`/api/posts/${slug}`)
@@ -17,6 +21,32 @@ export default function Post() {
       })
       .catch((err) => console.log(err));
   }, [slug]);
+
+  const handleRespond = async () => {
+    if (!accessToken) {
+      navigate("/signin");
+      return;
+    }
+
+    const res = await fetch(`/api/posts/${slug}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      credentials: "include",
+      body: JSON.stringify({ comment: body }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+    alert(data.message);
+    setComments((prev) => [data.comment, ...prev]);
+    setBody("");
+  };
 
   if (!post.success)
     return <div className={styles.loading}>{post.message}</div>;
@@ -50,9 +80,17 @@ export default function Post() {
           <textarea
             placeholder="What are your thoughts?"
             className={styles.commentInput}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
             rows="3"
           />
-          <button className={styles.commentSubmitBtn}>Respond</button>
+          <button
+            onClick={handleRespond}
+            disabled={!body.trim()}
+            className={styles.commentSubmitBtn}
+          >
+            Respond
+          </button>
         </div>
 
         <div className={styles.commentsList}>
@@ -74,3 +112,5 @@ export default function Post() {
     </div>
   );
 }
+
+export default Post;
