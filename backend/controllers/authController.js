@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
 
     res.cookie("jid", refreshToken, {
       httpOnly: true,
-      path: "/api/auth/token/refresh",
+      path: "/api/auth",
     });
 
     res.json({ message: "Authenticated", accessToken, payload });
@@ -85,10 +85,7 @@ exports.signup = async (req, res) => {
 exports.refreshToken = async (req, res) => {
   const token = req.cookies.jid;
 
-  if (!token)
-    return res
-      .status(401)
-      .json({ success: false, message: "No refresh token." });
+  if (!token) return res.json({ success: false, message: "No refresh token." });
 
   let payload = null;
   try {
@@ -114,18 +111,36 @@ exports.refreshToken = async (req, res) => {
 
   res.cookie("jid", refreshToken, {
     httpOnly: true,
-    path: "/api/auth/token/refresh",
+    path: "/api/auth",
   });
 
   res.json({ success: true, accessToken });
 };
 
 exports.logout = async (req, res) => {
-  await prisma.user.update({
-    data: { tokenVersion: { increment: 1 } },
-    where: { id: req.user.sub },
-  });
+  const token = req.cookies.jid;
 
-  res.clearCookie("jid", { path: "/auth/token/refresh" });
+  if (!token) {
+    return res.status(401).json({ message: "No refresh token cookie." });
+  }
+
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid refresh token." });
+  }
+
+  try {
+    await prisma.user.update({
+      where: { id: payload.sub },
+      data: { tokenVersion: { increment: 1 } },
+    });
+  } catch (err) {
+    console.error("Prisma error:", err);
+    return res.status(500).json({ message: "Database update failed." });
+  }
+
+  res.clearCookie("jid", { httpOnly: true, path: "/api/auth" });
   res.json({ success: true, message: "Logged out successfully!" });
 };
