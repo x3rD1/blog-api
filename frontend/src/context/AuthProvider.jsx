@@ -7,8 +7,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // optional, but useful
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
-  const [existError, setExistError] = useState("");
-  const [loginErr, setLoginErr] = useState("");
 
   // Restore session on first load (silent refresh)
   useEffect(() => {
@@ -47,7 +45,6 @@ export function AuthProvider({ children }) {
     });
     const data = await res.json();
     if (!res.ok) {
-      setLoginErr(data.message);
       throw new Error(data.message);
     }
 
@@ -85,9 +82,9 @@ export function AuthProvider({ children }) {
         });
         setErrors(fieldErrors);
       }
-      setExistError(data.message);
-      return;
+      throw new Error(data.message);
     }
+    return data;
   }
 
   return (
@@ -100,9 +97,6 @@ export function AuthProvider({ children }) {
         signup,
         errors,
         setErrors,
-        loginErr,
-        setLoginErr,
-        existError,
         loading,
       }}
     >
