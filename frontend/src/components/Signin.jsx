@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import styles from "./Signin.module.css";
 
 export default function Signin() {
-  const { login } = useContext(AuthContext);
+  const { login, loginErr } = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +25,7 @@ export default function Signin() {
       <div className={styles.signinBox}>
         <h1 className={styles.heading}>Sign in to your account</h1>
 
+        {loginErr && <div className={styles.errorMessage}>{loginErr}</div>}
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
             <label htmlFor="email" className={styles.label}>
