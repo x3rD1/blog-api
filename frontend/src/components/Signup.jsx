@@ -1,22 +1,28 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import styles from "./Signup.module.css";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Signup() {
-  const { signup, errors, setErrors, existError } = useContext(AuthContext);
+  const { signup, errors, setErrors } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [existError, setExistError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
+    setExistError("");
     try {
       await signup(username, email, password, confirmPassword);
+      if (!errors) {
+        navigate("/signin");
+      }
     } catch (err) {
-      console.log(err);
+      setExistError(err.message);
     }
   };
 
