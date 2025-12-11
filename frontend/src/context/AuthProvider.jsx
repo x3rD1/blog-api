@@ -16,11 +16,15 @@ export function AuthProvider({ children }) {
           credentials: "include",
         });
 
-        if (res.ok) {
-          const data = await res.json();
-          setAccessToken(data.accessToken);
-          setUser(parseJwt(data.accessToken));
+        if (!res.ok) {
+          setAccessToken(null);
+          setUser(null);
+          return;
         }
+
+        const data = await res.json();
+        setAccessToken(data.accessToken);
+        setUser(parseJwt(data.accessToken));
       } catch (err) {
         console.error("Session restore failed:", err);
       } finally {
@@ -51,7 +55,6 @@ export function AuthProvider({ children }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
       },
       credentials: "include",
     });
