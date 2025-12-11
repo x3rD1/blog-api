@@ -5,17 +5,20 @@ import { useNavigate } from "react-router";
 import styles from "./Signin.module.css";
 
 export default function Signin() {
-  const { login, loginErr } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginErr, setLoginErr] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoginErr("");
     try {
       await login(email, password);
       navigate("/blogs");
     } catch (err) {
+      setLoginErr(err.message);
       console.error(err.message);
     }
   };
