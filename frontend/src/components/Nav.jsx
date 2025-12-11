@@ -42,7 +42,9 @@ function Nav() {
               </Link>
             </li>
             <li className={styles.menuItem}>
-              <button>Sign up</button>
+              <Link to={"/signup"}>
+                <button>Sign up</button>
+              </Link>
             </li>
           </>
         )}
