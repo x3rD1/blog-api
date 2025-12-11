@@ -7,7 +7,7 @@ const { authenticateToken } = require("../middlewares/authenticateToken");
 
 authRouter.get("/login", authController.getLoginPage);
 authRouter.post("/login", authController.login);
-authRouter.post("/logout", authenticateToken, authController.logout);
+authRouter.post("/logout", authController.logout);
 authRouter.post("/token/refresh", authController.refreshToken);
 
 authRouter.get("/signup", authController.getSignupPage);
