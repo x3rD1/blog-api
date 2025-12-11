@@ -6,6 +6,9 @@ export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null); // optional, but useful
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
+  const [existError, setExistError] = useState("");
+  const [loginErr, setLoginErr] = useState("");
 
   // Restore session on first load (silent refresh)
   useEffect(() => {
@@ -42,10 +45,12 @@ export function AuthProvider({ children }) {
       credentials: "include",
       body: JSON.stringify({ email, password }),
     });
-
-    if (!res.ok) throw new Error("Invalid credentials");
-
     const data = await res.json();
+    if (!res.ok) {
+      setLoginErr(data.message);
+      throw new Error(data.message);
+    }
+
     setAccessToken(data.accessToken);
     setUser(parseJwt(data.accessToken));
   }
@@ -63,8 +68,44 @@ export function AuthProvider({ children }) {
     setUser(null);
   }
 
+  async function signup(username, email, password, confirmPassword) {
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password, confirmPassword }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      const fieldErrors = {};
+      if (data.errors) {
+        data.errors.forEach((err) => {
+          if (!fieldErrors[err.path]) fieldErrors[err.path] = err.msg;
+        });
+        setErrors(fieldErrors);
+      }
+      setExistError(data.message);
+      return;
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ accessToken, user, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{
+        accessToken,
+        user,
+        login,
+        logout,
+        signup,
+        errors,
+        setErrors,
+        loginErr,
+        setLoginErr,
+        existError,
+        loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
