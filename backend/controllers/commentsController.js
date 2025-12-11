@@ -69,9 +69,10 @@ exports.createComment = async (req, res) => {
         authorId: req.user.sub,
         postId: post.id,
       },
+      include: { author: { select: { username: true, id: true } } },
     });
 
-    res.json({ success: true, comment });
+    res.json({ success: true, message: "Sent", comment });
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, message: "Something went wrong." });
