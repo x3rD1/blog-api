@@ -6,6 +6,12 @@ const { isAdmin } = require("../middlewares/isAdmin");
 const { authenticateToken } = require("../middlewares/authenticateToken");
 
 postsRouter.get("/", postsController.getAllPosts);
+postsRouter.get(
+  "/admin",
+  authenticateToken,
+  isAdmin,
+  postsController.getAllAdminPosts
+);
 postsRouter.get("/:slug", postsController.getPostBySlug);
 
 postsRouter.post(
