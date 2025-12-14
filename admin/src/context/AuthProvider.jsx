@@ -35,9 +35,28 @@ function AuthProvider({ children }) {
     restore();
   }, []);
 
+  const logout = async () => {
+    try {
+      const res = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setAccessToken(null);
+      setUser(null);
+    }
+  };
   return (
     <AuthContext.Provider
-      value={{ accessToken, setAccessToken, user, loading }}
+      value={{ accessToken, setAccessToken, user, setUser, loading, logout }}
     >
       {children}
     </AuthContext.Provider>
