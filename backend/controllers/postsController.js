@@ -25,6 +25,30 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
+exports.getAllAdminPosts = async (req, res) => {
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        author: { admin: true },
+      },
+      include: { author: { select: { username: true } }, comments: true },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!posts.length)
+      return res.json({
+        success: true,
+        message: "No posts available.",
+        posts: [],
+      });
+
+    res.json(posts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Something went wrong!" });
+  }
+};
+
 exports.getPostBySlug = async (req, res) => {
   try {
     const post = await prisma.post.findUnique({
