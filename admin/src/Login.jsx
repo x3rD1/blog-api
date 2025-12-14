@@ -1,12 +1,13 @@
 import { useState, useContext } from "react";
 import AuthContext from "./context/authContext";
 import { useNavigate } from "react-router";
+import parseJwt from "./utils/jwt";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { setAccessToken } = useContext(AuthContext);
+  const { setAccessToken, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -29,8 +30,9 @@ function Login() {
       if (!data.payload.admin) {
         throw new Error("Unauthorized Access!");
       }
-
+      const user = parseJwt(data.accessToken);
       setAccessToken(data.accessToken);
+      setUser(user);
       navigate("/");
     } catch (err) {
       setError(err.message);
