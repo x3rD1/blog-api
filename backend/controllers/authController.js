@@ -104,6 +104,7 @@ exports.refreshToken = async (req, res) => {
     username: user.username,
     email: user.email,
     admin: user.admin,
+    tokenVersion: user.tokenVersion,
   };
 
   const accessToken = createAccessToken(userPayload);
