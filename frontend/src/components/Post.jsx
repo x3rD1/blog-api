@@ -13,7 +13,7 @@ function Post() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/api/posts/${slug}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/posts/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data);
@@ -28,15 +28,18 @@ function Post() {
       return;
     }
 
-    const res = await fetch(`/api/posts/${slug}/comments`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      credentials: "include",
-      body: JSON.stringify({ comment: body }),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/posts/${slug}/comments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({ comment: body }),
+      }
+    );
 
     const data = await res.json();
 

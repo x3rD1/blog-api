@@ -40,12 +40,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(email, password) {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ email, password }),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      }
+    );
     const data = await res.json();
     if (!res.ok) {
       throw new Error(data.message);
@@ -56,7 +59,7 @@ export function AuthProvider({ children }) {
   }
 
   async function logout() {
-    await fetch("/api/auth/logout", {
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,11 +72,14 @@ export function AuthProvider({ children }) {
   }
 
   async function signup(username, email, password, confirmPassword) {
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password, confirmPassword }),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password, confirmPassword }),
+      }
+    );
 
     const data = await res.json();
 
