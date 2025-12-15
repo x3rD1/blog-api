@@ -110,7 +110,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: calc(1.5em * 2);
+  max-height: calc(2em * 2);
 }
 
 .postFooter {

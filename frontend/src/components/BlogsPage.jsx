@@ -57,7 +57,10 @@ export default function BlogsPage() {
 
                         <h3 className={styles.title}>{post.title}</h3>
 
-                        <p className={styles.preview}>{post.body}</p>
+                        <p
+                          className={styles.preview}
+                          dangerouslySetInnerHTML={{ __html: post.body }}
+                        ></p>
 
                         <div className={styles.postFooter}>
                           <span className={styles.meta}>
