@@ -41,6 +41,9 @@ exports.login = async (req, res) => {
     res.cookie("jid", refreshToken, {
       httpOnly: true,
       path: "/api/auth",
+      secure: true,
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
     res.json({ message: "Authenticated", accessToken, payload });
@@ -113,6 +116,9 @@ exports.refreshToken = async (req, res) => {
   res.cookie("jid", refreshToken, {
     httpOnly: true,
     path: "/api/auth",
+    secure: true,
+    sameSite: "none",
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
   res.json({ success: true, accessToken });
@@ -142,6 +148,11 @@ exports.logout = async (req, res) => {
     return res.status(500).json({ message: "Database update failed." });
   }
 
-  res.clearCookie("jid", { httpOnly: true, path: "/api/auth" });
+  res.clearCookie("jid", {
+    httpOnly: true,
+    path: "/api/auth",
+    secure: true,
+    sameSite: "none",
+  });
   res.json({ success: true, message: "Logged out successfully!" });
 };
