@@ -70,7 +70,7 @@ function Post() {
 
       <article
         className={styles.postBody}
-        dangerouslySetInnerHTML={{ __html: post.body }}
+        dangerouslySetInnerHTML={{ __html: post.post.body }}
       />
 
       <div className={styles.commentsSection}>
