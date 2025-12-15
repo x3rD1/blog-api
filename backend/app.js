@@ -1,6 +1,29 @@
 const express = require("express");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
+
+app.set("trust proxy", 1);
+
+const allowedOrigins = [
+  "https://blog-api-gray-zeta.vercel.app",
+  "https://blog-api-admin-tau.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
