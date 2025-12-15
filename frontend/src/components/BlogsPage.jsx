@@ -3,13 +3,13 @@ import { Link } from "react-router";
 import styles from "./BlogPage.module.css";
 import TimeAgo from "../components/formatDate/TimeAgo";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function BlogsPage() {
   const [activeTab, setActiveTab] = useState("For you");
   const [blogs, setBlogs] = useState([]);
-
   useEffect(() => {
     async function fetchBlogs() {
-      const res = await fetch("/api/posts");
+      const res = await fetch(`${BACKEND_URL}/api/posts`);
       if (!res.ok) return console.log("Failed to fetch /api/posts");
       const data = await res.json();
       setBlogs(data);
