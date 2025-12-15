@@ -12,10 +12,13 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function restore() {
       try {
-        const res = await fetch("/api/auth/token/refresh", {
-          method: "POST",
-          credentials: "include",
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/auth/token/refresh`,
+          {
+            method: "POST",
+            credentials: "include",
+          }
+        );
 
         if (!res.ok) {
           setAccessToken(null);

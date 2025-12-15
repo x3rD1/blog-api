@@ -13,9 +13,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://blog-api-production-789f.up.railway.app",
+        target: "http://localhost:3000",
         changeOrigin: true,
-        secure: true,
+        secure: false,
       },
     },
   },
