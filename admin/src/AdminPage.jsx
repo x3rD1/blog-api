@@ -17,12 +17,15 @@ export default function AdminPage() {
     if (loading) return;
 
     async function getAllPosts() {
-      const res = await fetch("/api/posts/admin", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/posts/admin`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) {

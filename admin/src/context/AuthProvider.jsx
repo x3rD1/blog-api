@@ -10,10 +10,13 @@ function AuthProvider({ children }) {
   useEffect(() => {
     async function restore() {
       try {
-        const res = await fetch("/api/auth/token/refresh", {
-          method: "POST",
-          credentials: "include",
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/auth/token/refresh`,
+          {
+            method: "POST",
+            credentials: "include",
+          }
+        );
 
         if (!res.ok) {
           setAccessToken(null);
@@ -37,10 +40,13 @@ function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      const res = await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       const data = await res.json();
 

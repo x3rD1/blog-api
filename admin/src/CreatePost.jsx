@@ -37,18 +37,21 @@ export default function CreatePost() {
     setIsSubmitting(true);
     setError("");
     try {
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          title: title.trim(),
-          body: content,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/posts`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            title: title.trim(),
+            body: content,
+          }),
+        }
+      );
 
       const data = await response.json();
 
